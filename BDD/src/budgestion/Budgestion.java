@@ -5,6 +5,7 @@
  */
 package budgestion;
 
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  *
@@ -39,6 +41,8 @@ public class Budgestion {
             //Création d'un objet Statement
             Statement state = conn.createStatement();
 
+            load(1, conn);
+            
             Scanner sc = new Scanner(System.in);
             String str = sc.nextLine();
             if ("1".equals(str)) {
@@ -102,17 +106,32 @@ public class Budgestion {
         }
     }
 
-    public static void connection(String username, String password) {
-
-    }
-
-    public static void signUp(String fn, String ln, String un, String pw, Connection conn, Statement state) throws SQLException {
+    public static void signUp(String fn, String ln, String un, String pw, Connection conn, Statement state) throws SQLException, UnsupportedEncodingException, NoSuchAlgorithmException {
         PreparedStatement pstmt = conn.prepareStatement(
                 "INSERT INTO users (first_name, last_name, username, password) VALUES(?, ?, ?, ?)");
         pstmt.setString(1, fn);
         pstmt.setString(2, ln);
         pstmt.setString(3, un);
-        pstmt.setString(4, pw.getInstance("MD5"));
+        byte[] uniqueKey = pw.getBytes();
+        byte[] hash = null;
+
+        try {
+            hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
+        } catch (NoSuchAlgorithmException e) {
+            throw new Error("No MD5 support in this VM.");
+        }
+
+        StringBuilder hashString = new StringBuilder();
+        for (int i = 0; i < hash.length; i++) {
+            String hex = Integer.toHexString(hash[i]);
+            if (hex.length() == 1) {
+                hashString.append('0');
+                hashString.append(hex.charAt(hex.length() - 1));
+            } else {
+                hashString.append(hex.substring(hex.length() - 2));
+            }
+        }
+        pstmt.setString(4, hashString.toString());
 
         int rows = pstmt.executeUpdate();
         conn.commit();
@@ -127,12 +146,30 @@ public class Budgestion {
         PreparedStatement prepare = conn.prepareStatement(query);
 
         prepare.setString(1, username);
-        System.out.println(prepare.toString());
 
         ResultSet res = state.executeQuery(prepare.toString());
         while (res.next()) {
             String pswd = res.getString("password");
-            if (pswd.equals(password)) {
+            byte[] uniqueKey = password.getBytes();
+            byte[] hash = null;
+
+            try {
+                hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
+            } catch (NoSuchAlgorithmException e) {
+                throw new Error("No MD5 support in this VM.");
+            }
+
+            StringBuilder hashString = new StringBuilder();
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(hash[i]);
+                if (hex.length() == 1) {
+                    hashString.append('0');
+                    hashString.append(hex.charAt(hex.length() - 1));
+                } else {
+                    hashString.append(hex.substring(hex.length() - 2));
+                }
+            }
+            if (pswd.equals(hashString.toString())) {
                 System.out.println("connecté");
 
             } else {
@@ -140,8 +177,25 @@ public class Budgestion {
             }
         }
         prepare.close();
- 
+
         state.close();
     }
 
+    public static void load(int id, Connection conn) throws SQLException {
+        Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        String query = "SELECT * FROM flux WHERE user_id = ?";
+
+        PreparedStatement prepare = conn.prepareStatement(query);
+
+        prepare.setInt(1, id);
+
+        ResultSet res = state.executeQuery(prepare.toString());
+        while (res.next()) {
+            System.out.println(res.getInt("id"));
+            System.out.println(res.getFloat("amount"));
+            System.out.println(res.getDate("date"));
+            System.out.println(res.getInt("category"));
+            System.out.println(res.getBoolean("type"));
+        }
+    }
 }
