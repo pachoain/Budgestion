@@ -111,4 +111,22 @@ public class Account {
                     this.id = res.getInt("id");
         }
     }
+    
+    public void load() throws SQLException{
+        Statement state = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        String query = "SELECT * FROM flux WHERE user_id = ?";
+
+        PreparedStatement prepare = conn.prepareStatement(query);
+
+        prepare.setInt(1, this.id);
+
+        ResultSet res = state.executeQuery(prepare.toString());
+        while (res.next()) {
+            System.out.println(res.getInt("id"));
+            System.out.println(res.getFloat("amount"));
+            System.out.println(res.getDate("date"));
+            System.out.println(res.getInt("category"));
+            System.out.println(res.getBoolean("type"));
+        }
+    }
 }
