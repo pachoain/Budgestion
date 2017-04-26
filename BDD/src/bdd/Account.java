@@ -70,6 +70,7 @@ public class Account {
         prepare.close();
 
         state.close();
+        setId(username);
     }
 
     public void signUp() throws SQLException {
@@ -91,5 +92,20 @@ public class Account {
 
         int rows = pstmt.executeUpdate();
         conn.commit();
+        setId(username);
+    }
+    
+    public void setId(String username) throws SQLException{
+        Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        String query = "SELECT id FROM users WHERE username = ?";
+
+        PreparedStatement prepare = conn.prepareStatement(query);
+
+        prepare.setString(1, username);
+
+        ResultSet res = state.executeQuery(prepare.toString());
+        while(res.next()){
+                    this.id = res.getInt("id");
+        }
     }
 }
