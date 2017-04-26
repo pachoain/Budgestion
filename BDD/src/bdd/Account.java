@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -20,6 +21,8 @@ import java.util.Scanner;
 public class Account {
     private int id;
     private Connection conn;
+    private ArrayList<Operation> spendings;
+    private ArrayList<Operation> incomes;
 
     public Account(int connection) {
         try {
