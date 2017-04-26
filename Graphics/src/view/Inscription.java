@@ -16,7 +16,7 @@ public class Inscription {
     public Inscription(Stage primaryStage){
     Group root = new Group();
         
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTBLUE);
+        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
         
         Label user_label = new Label("Username");
         TextField username = new TextField();
@@ -90,15 +90,19 @@ public class Inscription {
         back.setLayoutY(450);
             
         validate.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               System.out.println("Validate");
-           }
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Validate");
+            }
         });
         
+        validate.setDefaultButton(true);
+        
         back.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               Launch launch = new Launch(primaryStage); 
-           }
+            @Override
+            public void handle(ActionEvent event) {
+                Launch launch = new Launch(primaryStage); 
+            }
         });
         
         

@@ -13,7 +13,7 @@ public class Launch {
     public Launch(Stage primaryStage){
     Group root = new Group();
         
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTBLUE);
+        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
         
         Button sign_up = new Button("Sign Up");        
         Button log_in = new Button("Log In");
@@ -29,15 +29,17 @@ public class Launch {
         log_in.setLayoutY(300);
         
         sign_up.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               Inscription inscription = new Inscription(primaryStage);
-           }
+            @Override
+            public void handle(ActionEvent event) {
+                Inscription inscription = new Inscription(primaryStage);
+            }
         });
         
         log_in.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               Identificator identificator = new Identificator(primaryStage);
-           }
+            @Override
+            public void handle(ActionEvent event) {
+                Identificator identificator = new Identificator(primaryStage);
+            }
         });
         
         root.getChildren().add(sign_up);

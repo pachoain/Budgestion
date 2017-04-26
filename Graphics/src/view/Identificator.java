@@ -4,10 +4,13 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -16,7 +19,7 @@ public class Identificator {
     public Identificator(Stage primaryStage){
     Group root = new Group();
         
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTBLUE);
+        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
         
         Label user_label = new Label("Username");
         TextField username = new TextField();
@@ -54,15 +57,28 @@ public class Identificator {
         back.setLayoutY(450);
             
         log_in.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               System.out.println("Log In");
+            @Override
+            public void handle(ActionEvent event) {
+                if(username.getText().equals("username") && password.getText().equals("password")) {
+                    Home home = new Home(primaryStage);
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("ERROR !");
+                    alert.setHeaderText("The username or the password are wrong !");
+                    alert.setContentText("Check the details !");
+
+                    alert.showAndWait();
+               }
            }
         });
         
+        log_in.setDefaultButton(true);
+               
         back.setOnAction(new EventHandler<ActionEvent>(){
-           public void handle(ActionEvent event) {
-               Launch launch = new Launch(primaryStage); 
-           }
+            @Override
+            public void handle(ActionEvent event) {
+                Launch launch = new Launch(primaryStage); 
+            }
         });
         
         
