@@ -55,11 +55,11 @@ public class Months {
 
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
-                new PieChart.Data("Loisirs", 15),
-                new PieChart.Data("Alimentation", 25),
-                new PieChart.Data("Habillement", 10),
-                new PieChart.Data("Autres", 17),
-                new PieChart.Data("Loyer", 33));
+                new PieChart.Data("Hobbies", 15),
+                new PieChart.Data("Food", 25),
+                new PieChart.Data("Clothes", 10),
+                new PieChart.Data("Other", 17),
+                new PieChart.Data("Rent", 33));
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Spendings on Months");
         chart.setLabelLineLength(10);
