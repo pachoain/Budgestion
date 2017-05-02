@@ -24,7 +24,7 @@ public class Account {
     private ArrayList<Operation> spendings;
     private ArrayList<Operation> incomes;
 
-    public Account(int connection) {
+    public Account(String... infos) {
         try {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
@@ -35,67 +35,69 @@ public class Account {
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);
-            System.out.println("Connexion effective !");
-            if (connection == 1) {
-                signIn();
+            System.out.println("Connexion effective !");            
+            if (infos.length == 2) {
+                signIn(infos);
             } else {
-                signUp();
+                signUp(infos);
             }
+            load();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void signIn() throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir votre nom d'utilisateur");
-        String username = sc.nextLine();
-        System.out.println("Veuillez saisir votre mot de passe");
-        String password = sc.nextLine();
+    public void signIn(String[] infos) throws SQLException {
 
         Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT password FROM users WHERE username = ?";
 
         PreparedStatement prepare = conn.prepareStatement(query);
 
-        prepare.setString(1, username);
+        prepare.setString(1, infos[0]);
 
         ResultSet res = state.executeQuery(prepare.toString());
         while (res.next()) {
             String pswd = res.getString("password");
-            if (pswd.equals(password)) {
+            if (pswd.equals(infos[1])) {
                 System.out.println("connecté");
+                setId(infos[0]);
 
             } else {
                 System.out.println("charlatant tu essaies de m'usurper");
+                this.id = -1;
             }
         }
         prepare.close();
 
         state.close();
-        setId(username);
     }
 
-    public void signUp() throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Veuillez saisir votre prénom");
-        String first_name = sc.nextLine();
-        System.out.println("Veuillez saisir votre nom");
-        String last_name = sc.nextLine();
-        System.out.println("Veuillez saisir votre nom d'utilisateur");
-        String username = sc.nextLine();
-        System.out.println("Veuillez saisir votre mot de passe");
-        String password = sc.nextLine();
+    public void signUp(String[] infos) throws SQLException {
+        Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        String query = "SELECT id FROM users WHERE username = ?";
+
+        PreparedStatement prepare = conn.prepareStatement(query);
+
+        prepare.setString(1, infos[2]);
+
+        ResultSet res = state.executeQuery(prepare.toString());
+        while(res.next()){
+            System.out.println("ca doit pas passer ca");
+                    this.id = -1;
+                    return;
+        }
+        
         PreparedStatement pstmt = conn.prepareStatement(
                 "INSERT INTO users (first_name, last_name, username, password) VALUES(?, ?, ?, ?)");
-        pstmt.setString(1, first_name);
-        pstmt.setString(2, last_name);
-        pstmt.setString(3, username);
-        pstmt.setString(4, password);
+        pstmt.setString(1, infos[0]);
+        pstmt.setString(2, infos[1]);
+        pstmt.setString(3, infos[2]);
+        pstmt.setString(4, infos[3]);
 
         int rows = pstmt.executeUpdate();
         conn.commit();
-        setId(username);
+        setId(infos[0]);
     }
     
     public void setId(String username) throws SQLException{
@@ -128,5 +130,9 @@ public class Account {
             System.out.println(res.getInt("category"));
             System.out.println(res.getBoolean("type"));
         }
+    }
+    
+    public int getID(){
+        return id;
     }
 }

@@ -92,6 +92,7 @@ public class Inscription {
         validate.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
+                Home home = new Home(primaryStage, new Account())
                 System.out.println("Validate");
             }
         });

@@ -9,9 +9,10 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Account;
 
 public class Home{
-    public Home(Stage primaryStage) {
+    public Home(Stage primaryStage, Account account) {
         Group root = new Group();
         
         Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
@@ -38,14 +39,14 @@ public class Home{
         menuYears.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                Years years = new Years(primaryStage);
+                Years years = new Years(primaryStage, account);
             }
         });
         
         menuMonths.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                Months months = new Months(primaryStage);
+                Months months = new Months(primaryStage, account);
             }
         });
         

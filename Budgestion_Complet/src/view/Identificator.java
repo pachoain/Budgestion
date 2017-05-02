@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.Account;
 
 public class Identificator {
     
@@ -59,16 +60,18 @@ public class Identificator {
         log_in.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(username.getText().equals("username") && password.getText().equals("password")) {
-                    Home home = new Home(primaryStage);
-                } else {
+                Account account = new Account(username.getText(), password.getText() );
+                    
+                if (account.getID() == -1){
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("ERROR !");
                     alert.setHeaderText("The username or the password are wrong !");
                     alert.setContentText("Check the details !");
 
                     alert.showAndWait();
-               }
+               }else{
+                    Home home = new Home(primaryStage, account);
+                }
            }
         });
         
