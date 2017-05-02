@@ -8,7 +8,11 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+<<<<<<< HEAD
     <jar href="Budgestion.jar" size="25344" download="eager" />
+=======
+    <jar href="Budgestion.jar" size="24766" download="eager" />
+>>>>>>> 7d28cc2ae3755dad1f5061be3187723c9397223c
   </resources>
   <applet-desc  width="800" height="600" main-class="com.javafx.main.NoJavaFXFallback"  name="Budgestion" >
     <param name="requiredFXVersion" value="8.0+"/>
