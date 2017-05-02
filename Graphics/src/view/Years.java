@@ -18,7 +18,7 @@ public class Years {
         
         Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
         
-        primaryStage.setTitle("Home");
+        primaryStage.setTitle("Budgestion");
     
         MenuBar menuBar = new MenuBar();
         Menu menu = new Menu("Menu");
