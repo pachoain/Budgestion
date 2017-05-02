@@ -56,7 +56,7 @@ public class Home{
                 
                 Group earning_group = new Group();
                 
-                Scene earning_scene = new Scene(earning_group, 300, 200, Color.LIGHTGREEN);
+                Scene earning_scene = new Scene(earning_group, 300, 250, Color.LIGHTGREEN);
                 
                 Label date_label = new Label("Date");
                 date_label.setStyle("-fx-font: 15 arial;");
@@ -76,10 +76,17 @@ public class Home{
                 amount.setLayoutX(50);
                 amount.setLayoutY(110);
                 
+                Button validate = new Button("Validate");
+                validate.setStyle("-fx-font: 15 arial;");
+                validate.setLayoutX(200);
+                validate.setLayoutY(200);
+                
                 earning_group.getChildren().add(date_label);
                 earning_group.getChildren().add(date);
                 earning_group.getChildren().add(amount_label);
                 earning_group.getChildren().add(amount);
+                earning_group.getChildren().add(validate);
+
                                 
                 earning.setTitle("Earning");
                 earning.setScene(earning_scene);
@@ -185,6 +192,11 @@ public class Home{
                         
                 food.setSelected(true);
                 
+                Button validate = new Button("Validate");
+                validate.setStyle("-fx-font: 15 arial;");
+                validate.setLayoutX(200);
+                validate.setLayoutY(300);
+                
                 spending_group.getChildren().add(date_label);
                 spending_group.getChildren().add(date);
                 spending_group.getChildren().add(amount_label);
@@ -202,6 +214,7 @@ public class Home{
                 spending_group.getChildren().add(transports_label);
                 spending_group.getChildren().add(undefined);
                 spending_group.getChildren().add(undefined_label);
+                spending_group.getChildren().add(validate);
                 
                 spending.setTitle("Spending");
                 spending.setScene(spending_scene);
