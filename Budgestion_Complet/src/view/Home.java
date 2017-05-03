@@ -38,8 +38,8 @@ public class Home{
         Button earning = new Button("Earning");
         Button spending = new Button("Spending");
         
-        Button import_button = new Button("import");
-        Button export_button = new Button("export");
+        Button import_button = new Button("Import");
+        Button export_button = new Button("Export");
         
         import_button.setStyle("-fx-font: 22 arial;");
         import_button.setPrefSize(300, 150);
