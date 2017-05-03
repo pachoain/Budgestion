@@ -20,7 +20,7 @@ import java.util.Scanner;
  */
 public class Account {
 
-    private int id;
+    private int id = -1;
     private Connection conn;
     private ArrayList<Operation> spendings;
     private ArrayList<Operation> incomes;
