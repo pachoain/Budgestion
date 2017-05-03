@@ -91,33 +91,29 @@ public class Inscription {
         back.setLayoutX(50);
         back.setLayoutY(450);
 
-        
-        
         validate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
-                if(username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")){
+                if (username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR !");
-                    alert.setHeaderText("One of the field is missing !");
+                    alert.setHeaderText("At least one field is missing !");
                     alert.setContentText("You must complete all fields !");
 
                     alert.showAndWait();
                 } else {
-                    if(password.getText().equals(confirmation_password_label.getText())){
+                    if (password.getText().equals(confirmation_password_label.getText())) {
                         Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
-                if (account.getID() == -1) {
-                    //System.out.println("wtf");
-                   Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("ERROR !");
-                    alert.setHeaderText("This username already exists !");
-                    alert.setContentText("Check the details !");
+                        if (account.getID() == -1) {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("ERROR !");
+                            alert.setHeaderText("This username already exists !");
+                            alert.setContentText("Check the details !");
 
-                    alert.showAndWait();
-                } else {
-                    Years years = new Years(primaryStage, account);
-                }
+                            alert.showAndWait();
+                        } else {
+                            Home home = new Home(primaryStage, account);
+                        }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ERROR !");
@@ -126,7 +122,7 @@ public class Inscription {
 
                         alert.showAndWait();
                     }
-                }               
+                }
             }
         });
 

@@ -1,10 +1,7 @@
 package view;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Side;
 import javafx.scene.chart.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -58,7 +55,7 @@ public class Years {
         
         xAxis.setLabel("Month");
         yAxis.setLabel("€");
-        
+                
         final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
 
         lineChart.setTitle("Spendings & Earnings, 2016");
