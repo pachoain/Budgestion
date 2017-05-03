@@ -19,6 +19,7 @@ import java.util.Scanner;
  * @author luc
  */
 public class Account {
+
     private int id;
     private Connection conn;
     private ArrayList<Operation> spendings;
@@ -35,7 +36,7 @@ public class Account {
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);
-            System.out.println("Connexion effective !");            
+            System.out.println("Connexion effective !");
             if (infos.length == 2) {
                 signIn(infos);
             } else {
@@ -82,25 +83,25 @@ public class Account {
         prepare.setString(1, infos[2]);
 
         ResultSet res = state.executeQuery(prepare.toString());
-        while(res.next()){
+        if (res.next()) {
             System.out.println("ca doit pas passer ca");
-                    this.id = -1;
-                    return;
-        }
-        
-        PreparedStatement pstmt = conn.prepareStatement(
-                "INSERT INTO users (first_name, last_name, username, password) VALUES(?, ?, ?, ?)");
-        pstmt.setString(1, infos[0]);
-        pstmt.setString(2, infos[1]);
-        pstmt.setString(3, infos[2]);
-        pstmt.setString(4, infos[3]);
+            this.id = -1;
+        } else {
+            PreparedStatement pstmt = conn.prepareStatement(
+                    "INSERT INTO users (first_name, last_name, username, password) VALUES(?, ?, ?, ?)");
+            pstmt.setString(1, infos[0]);
+            pstmt.setString(2, infos[1]);
+            pstmt.setString(3, infos[2]);
+            pstmt.setString(4, infos[3]);
 
-        int rows = pstmt.executeUpdate();
-        conn.commit();
-        setId(infos[0]);
+            int rows = pstmt.executeUpdate();
+            conn.commit();
+            setId(infos[0]);
+        }
+
     }
-    
-    public void setId(String username) throws SQLException{
+
+    public void setId(String username) throws SQLException {
         Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT id FROM users WHERE username = ?";
 
@@ -109,12 +110,12 @@ public class Account {
         prepare.setString(1, username);
 
         ResultSet res = state.executeQuery(prepare.toString());
-        while(res.next()){
-                    this.id = res.getInt("id");
+        while (res.next()) {
+            this.id = res.getInt("id");
         }
     }
-    
-    public void load() throws SQLException{
+
+    public void load() throws SQLException {
         Statement state = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT * FROM flux WHERE user_id = ?";
 
@@ -131,8 +132,8 @@ public class Account {
             System.out.println(res.getBoolean("type"));
         }
     }
-    
-    public int getID(){
+
+    public int getID() {
         return id;
     }
 }

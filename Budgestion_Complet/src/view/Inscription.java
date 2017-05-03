@@ -91,13 +91,25 @@ public class Inscription {
         back.setLayoutX(50);
         back.setLayoutY(450);
 
+        
+        
         validate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("Validate");
-                Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
-                if (account.getID() == -1) {
+                
+                if(username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR !");
+                    alert.setHeaderText("One of the field is missing !");
+                    alert.setContentText("You must complete all fields !");
+
+                    alert.showAndWait();
+                } else {
+                    if(password.getText().equals(confirmation_password_label.getText())){
+                        Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
+                if (account.getID() == -1) {
+                    //System.out.println("wtf");
+                   Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("ERROR !");
                     alert.setHeaderText("This username already exists !");
                     alert.setContentText("Check the details !");
@@ -106,6 +118,15 @@ public class Inscription {
                 } else {
                     Years years = new Years(primaryStage, account);
                 }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("ERROR !");
+                        alert.setHeaderText("The passwords do not match !");
+                        alert.setContentText("Password and confirmation password must be the same !");
+
+                        alert.showAndWait();
+                    }
+                }               
             }
         });
 
