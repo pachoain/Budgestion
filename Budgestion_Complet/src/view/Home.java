@@ -38,14 +38,27 @@ public class Home{
         Button earning = new Button("Earning");
         Button spending = new Button("Spending");
         
+        Button import_button = new Button("import");
+        Button export_button = new Button("export");
+        
+        import_button.setStyle("-fx-font: 22 arial;");
+        import_button.setPrefSize(300, 150);
+        import_button.setLayoutX(550);
+        import_button.setLayoutY(100);
+        
+        export_button.setStyle("-fx-font: 22 arial;");
+        export_button.setPrefSize(300, 150);
+        export_button.setLayoutX(550);
+        export_button.setLayoutY(300);
+        
         earning.setStyle("-fx-font: 22 arial;");
         earning.setPrefSize(300, 150);
-        earning.setLayoutX(70);
+        earning.setLayoutX(120);
         earning.setLayoutY(100);
         
         spending.setStyle("-fx-font: 22 arial;");
         spending.setPrefSize(300, 150);
-        spending.setLayoutX(70);
+        spending.setLayoutX(120);
         spending.setLayoutY(300);
         
         earning.setOnAction(new EventHandler<ActionEvent>(){
@@ -164,13 +177,13 @@ public class Home{
                 transports_label.setLayoutX(80);
                 transports_label.setLayoutY(280);
                 
-                RadioButton undefined = new RadioButton();
-                undefined.setLayoutX(60);
-                undefined.setLayoutY(300);
-                Label undefined_label = new Label("Undefined");
-                undefined_label.setStyle("-fx-font: 13 arial;");
-                undefined_label.setLayoutX(80);
-                undefined_label.setLayoutY(300);
+                RadioButton other = new RadioButton();
+                other.setLayoutX(60);
+                other.setLayoutY(300);
+                Label other_label = new Label("Other");
+                other_label.setStyle("-fx-font: 13 arial;");
+                other_label.setLayoutX(80);
+                other_label.setLayoutY(300);
                 
                 ToggleGroup categories = new ToggleGroup();
                 
@@ -179,14 +192,14 @@ public class Home{
                 withdraw.setToggleGroup(categories);
                 hobbies.setToggleGroup(categories);
                 transports.setToggleGroup(categories);
-                undefined.setToggleGroup(categories);
+                other.setToggleGroup(categories);
                         
                 food.setFocusTraversable(false);
                 multimedia.setFocusTraversable(false);
                 withdraw.setFocusTraversable(false);
                 hobbies.setFocusTraversable(false);
                 transports.setFocusTraversable(false);  
-                undefined.setFocusTraversable(false);
+                other.setFocusTraversable(false);
                         
                 food.setSelected(true);
                 
@@ -210,13 +223,27 @@ public class Home{
                 spending_group.getChildren().add(hobbies_label);
                 spending_group.getChildren().add(transports);
                 spending_group.getChildren().add(transports_label);
-                spending_group.getChildren().add(undefined);
-                spending_group.getChildren().add(undefined_label);
+                spending_group.getChildren().add(other);
+                spending_group.getChildren().add(other_label);
                 spending_group.getChildren().add(validate);
                 
                 spending.setTitle("Spending");
                 spending.setScene(spending_scene);
                 spending.show();
+            }
+        });
+        
+        import_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Ready to import");
+            }
+        });
+        
+        export_button.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Ready to export");
             }
         });
         
@@ -246,6 +273,8 @@ public class Home{
         root.getChildren().add(menuBar);
         root.getChildren().add(earning);
         root.getChildren().add(spending);
+        root.getChildren().add(import_button);
+        root.getChildren().add(export_button);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
