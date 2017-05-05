@@ -99,33 +99,6 @@ public class Years {
         lineChart.setPrefSize(960, 500);
         lineChart.setLayoutY(40);
 
-        final double SCALE_DELTA = 1.1;
-        lineChart.setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                event.consume();
-
-                if (event.getDeltaY() == 0) {
-                    return;
-                }
-
-                double scaleFactor = (event.getDeltaY() > 0) ? SCALE_DELTA : 1 / SCALE_DELTA;
-
-                lineChart.setScaleX(lineChart.getScaleX() * scaleFactor);
-                lineChart.setScaleY(lineChart.getScaleY() * scaleFactor);
-            }
-        });
-
-        lineChart.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount() == 2) {
-                    lineChart.setScaleX(1.0);
-                    lineChart.setScaleY(1.0);
-                }
-            }
-        });
-
         root.getChildren().add(menuBar);
         root.getChildren().add(lineChart);
         primaryStage.setScene(scene);
