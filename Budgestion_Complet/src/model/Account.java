@@ -19,7 +19,6 @@ public class Account {
         try {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
-
             String url = "jdbc:postgresql://localhost:5432/Budgestion";
             String user = "postgres";
             String passwd = "palex1996";
