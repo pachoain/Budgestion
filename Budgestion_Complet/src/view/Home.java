@@ -101,7 +101,7 @@ public class Home{
                 validate.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent event) {
-                        if(/*date.getChronology() == null || */amount.getText().equals("")){
+                        if(date.getValue() == null || amount.getText().equals("")){
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("ERROR !");
                                 alert.setHeaderText("At least one field is missing !");
@@ -255,7 +255,7 @@ public class Home{
                 validate.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent event) {
-                        if(/*date.getChronology() == null || */amount.getText().equals("")){
+                        if(date.getValue() == null || amount.getText().equals("")){
                             Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("ERROR !");
                                 alert.setHeaderText("At least one field is missing !");
