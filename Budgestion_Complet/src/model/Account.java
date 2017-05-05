@@ -20,7 +20,7 @@ import java.util.Scanner;
  */
 public class Account {
 
-    private int id = -1;
+    private int id;
     private Connection conn;
     private ArrayList<Operation> spendings;
     private ArrayList<Operation> incomes;
@@ -30,9 +30,9 @@ public class Account {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
 
-            String url = "jdbc:postgresql://localhost:5432/Budgestion";
-            String user = "isen";
-            String passwd = "isencir";
+            String url = "jdbc:postgresql://localhost:5433/Budgestion";
+            String user = "postgres";
+            String passwd = "fabr9600";
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);
@@ -49,7 +49,8 @@ public class Account {
     }
 
     public void signIn(String[] infos) throws SQLException {
-
+        
+        this.id = -1;
         Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT password FROM users WHERE username = ?";
 
@@ -64,9 +65,6 @@ public class Account {
                 System.out.println("connecté");
                 setId(infos[0]);
 
-            } else {
-                System.out.println("charlatant tu essaies de m'usurper");
-                this.id = -1;
             }
         }
         prepare.close();
