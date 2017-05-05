@@ -109,7 +109,7 @@ public class Home{
 
                                 alert.showAndWait();
                         } else {
-                            if(this.isValidFloat(amount.getText())){
+                            if(this.isValidFloat(amount.getText()) && Double.parseDouble(amount.getText()) != 0){
                                 //TODO
                             
                                 earning.close();
@@ -263,14 +263,14 @@ public class Home{
 
                                 alert.showAndWait();
                         } else {
-                            if(this.isValidFloat(amount.getText())){
-                                //TODO
+                            if(this.isValidFloat(amount.getText()) && Double.parseDouble(amount.getText()) != 0){
+                                // TODO
                             
                                 spending.close();
                             } else {
                                 Alert alert = new Alert(Alert.AlertType.ERROR);
                                 alert.setTitle("ERROR !");
-                                alert.setHeaderText("The amount must be a real !");
+                                alert.setHeaderText("The amount must be a real and different from 0!");
                                 alert.setContentText("Check the details !");
 
                                 alert.showAndWait();
