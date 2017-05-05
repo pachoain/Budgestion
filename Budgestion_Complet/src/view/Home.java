@@ -95,7 +95,17 @@ public class Home{
                 validate.setStyle("-fx-font: 15 arial;");
                 validate.setLayoutX(200);
                 validate.setLayoutY(200);
+                validate.setDefaultButton(true);
                 
+                validate.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event) {
+                        //TODO
+                        
+                        earning.close();
+                    }
+                });
+                        
                 earning_group.getChildren().add(date_label);
                 earning_group.getChildren().add(date);
                 earning_group.getChildren().add(amount_label);
@@ -212,6 +222,16 @@ public class Home{
                 validate.setStyle("-fx-font: 15 arial;");
                 validate.setLayoutX(200);
                 validate.setLayoutY(300);
+                validate.setDefaultButton(true);
+                
+                validate.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event) {
+                        //TODO
+                        
+                        spending.close();
+                    }
+                });
                 
                 spending_group.getChildren().add(date_label);
                 spending_group.getChildren().add(date);
