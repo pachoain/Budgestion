@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import java.sql.Connection;
@@ -12,12 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-/**
- *
- * @author luc
- */
 public class Account {
 
     private int id;
@@ -30,9 +20,15 @@ public class Account {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
 
+<<<<<<< HEAD
             String url = "jdbc:postgresql://localhost:5433/Budgestion";
             String user = "postgres";
             String passwd = "fabr9600";
+=======
+            String url = "jdbc:postgresql://localhost:5432/Budgestion";
+            String user = "postgres";
+            String passwd = "palex1996";
+>>>>>>> adebead00d5cdb58dfd145d597e6b106ae5cb0c6
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);
@@ -49,7 +45,10 @@ public class Account {
     }
 
     public void signIn(String[] infos) throws SQLException {
+<<<<<<< HEAD
         
+=======
+>>>>>>> adebead00d5cdb58dfd145d597e6b106ae5cb0c6
         this.id = -1;
         Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT password FROM users WHERE username = ?";
@@ -82,7 +81,6 @@ public class Account {
 
         ResultSet res = state.executeQuery(prepare.toString());
         if (res.next()) {
-            System.out.println("ca doit pas passer ca");
             this.id = -1;
         } else {
             PreparedStatement pstmt = conn.prepareStatement(
