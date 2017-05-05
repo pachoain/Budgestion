@@ -4,6 +4,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -100,9 +101,36 @@ public class Home{
                 validate.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent event) {
-                        //TODO
-                        
-                        earning.close();
+                        if(/*date.getChronology() == null || */amount.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("ERROR !");
+                                alert.setHeaderText("At least one field is missing !");
+                                alert.setContentText("Check the details !");
+
+                                alert.showAndWait();
+                        } else {
+                            if(this.isValidFloat(amount.getText())){
+                                //TODO
+                            
+                                earning.close();
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("ERROR !");
+                                alert.setHeaderText("The amount must be a real !");
+                                alert.setContentText("Check the details !");
+
+                                alert.showAndWait();
+                            }
+                        }
+                    }
+                    
+                    private boolean isValidFloat(String str) {
+                        try {
+                            Double.parseDouble(str);
+                        } catch (NumberFormatException nfe) {
+                            return false;
+                        }
+                        return true;		
                     }
                 });
                         
@@ -227,9 +255,36 @@ public class Home{
                 validate.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
                     public void handle(ActionEvent event) {
-                        //TODO
-                        
-                        spending.close();
+                        if(/*date.getChronology() == null || */amount.getText().equals("")){
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("ERROR !");
+                                alert.setHeaderText("At least one field is missing !");
+                                alert.setContentText("Check the details !");
+
+                                alert.showAndWait();
+                        } else {
+                            if(this.isValidFloat(amount.getText())){
+                                //TODO
+                            
+                                spending.close();
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR);
+                                alert.setTitle("ERROR !");
+                                alert.setHeaderText("The amount must be a real !");
+                                alert.setContentText("Check the details !");
+
+                                alert.showAndWait();
+                            }
+                        }
+                    }
+                    
+                    private boolean isValidFloat(String str) {
+                        try {
+                            Double.parseDouble(str);
+                        } catch (NumberFormatException nfe) {
+                            return false;
+                        }
+                        return true;		
                     }
                 });
                 
