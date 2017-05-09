@@ -1,7 +1,6 @@
 package view;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -91,48 +90,42 @@ public class Inscription {
         back.setLayoutX(50);
         back.setLayoutY(450);
 
-        validate.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("ERROR !");
-                    alert.setHeaderText("At least one field is missing !");
-                    alert.setContentText("You must complete all fields !");
-
-                    alert.showAndWait();
-                } else {
-                    if (password.getText().equals(confirmation_password_label.getText())) {
-                        Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
-                        if (account.getID() == -1) {
-                            Alert alert = new Alert(Alert.AlertType.ERROR);
-                            alert.setTitle("ERROR !");
-                            alert.setHeaderText("This username already exists !");
-                            alert.setContentText("Check the details !");
-
-                            alert.showAndWait();
-                        } else {
-                            Home home = new Home(primaryStage, account);
-                        }
-                    } else {
+        validate.setOnAction((ActionEvent event) -> {
+            if (username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR !");
+                alert.setHeaderText("At least one field is missing !");
+                alert.setContentText("You must complete all fields !");
+                
+                alert.showAndWait();
+            } else {
+                if (password.getText().equals(confirmation_password_label.getText())) {
+                    Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
+                    if (account.getID() == -1) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ERROR !");
-                        alert.setHeaderText("The passwords do not match !");
-                        alert.setContentText("Password and confirmation password must be the same !");
-
+                        alert.setHeaderText("This username already exists !");
+                        alert.setContentText("Check the details !");
+                        
                         alert.showAndWait();
+                    } else {
+                        Home home = new Home(primaryStage, account);
                     }
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("ERROR !");
+                    alert.setHeaderText("The passwords do not match !");
+                    alert.setContentText("Password and confirmation password must be the same !");
+                    
+                    alert.showAndWait();
                 }
             }
         });
 
         validate.setDefaultButton(true);
 
-        back.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Launch launch = new Launch(primaryStage);
-            }
+        back.setOnAction((ActionEvent event) -> {
+            Launch launch = new Launch(primaryStage);
         });
 
         root.getChildren().add(personal_info);

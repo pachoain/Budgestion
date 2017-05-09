@@ -1,12 +1,14 @@
 package model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class Account {
 
@@ -20,8 +22,8 @@ public class Account {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
             String url = "jdbc:postgresql://localhost:5432/Budgestion";
-            String user = "postgres";
-            String passwd = "palex1996";
+            String user = "isen";
+            String passwd = "isencir";
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);
@@ -101,21 +103,146 @@ public class Account {
     }
 
     public void load() throws SQLException {
-        Statement state = this.conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+        Statement state = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
         String query = "SELECT * FROM flux WHERE user_id = ?";
 
         PreparedStatement prepare = conn.prepareStatement(query);
-
+        this.spendings = new ArrayList<>();
+        this.incomes = new ArrayList<>();
         prepare.setInt(1, this.id);
 
         ResultSet res = state.executeQuery(prepare.toString());
         while (res.next()) {
-            System.out.println(res.getInt("id"));
-            System.out.println(res.getFloat("amount"));
-            System.out.println(res.getDate("date"));
-            System.out.println(res.getInt("category"));
-            System.out.println(res.getBoolean("type"));
+            float amount = res.getFloat("amount");
+            Date date = res.getDate("date");
+            int category = res.getInt("category");
+            Operation operation = new Operation(amount, date, category);
+            if (amount < 0) {
+                spendings.add(operation);
+            } else {
+                incomes.add(operation);
+            }
         }
+    }
+
+    public float[] getMonth(Date date) {
+        float[] month = new float[7];
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+        for (Operation spending : this.spendings) {
+            calendar.setTime(spending.getDate());
+            if ((calendar.get(Calendar.MONTH) == currentMonth) && (calendar.get(Calendar.YEAR) == currentYear)) {
+                month[spending.getCategory()] += spending.getValue();
+            }
+        }
+        return month;
+    }
+
+    /*public float[] getYear(Date date) {
+        float[] year = new float[7];
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int currentYear = calendar.get(Calendar.YEAR);
+        for (Operation spending : this.spendings) {
+            calendar.setTime(spending.getDate());
+            if (calendar.get(Calendar.YEAR) == currentYear) {
+                year[spending.getCategory()] += spending.getValue();
+            }
+        }
+        return year;
+    }*/
+
+    public float[] getSpendingsByYear(int year) {
+        float[] tot_spending = new float[12];
+        Calendar calendar = Calendar.getInstance();
+        for (Operation spending : this.spendings) {
+            calendar.setTime(spending.getDate());
+            if (calendar.get(Calendar.YEAR) == year) {
+                tot_spending[calendar.get(Calendar.MONTH)] += spending.getValue();
+            }
+        }
+        return tot_spending;
+    }
+
+    public float[] getIncomesByYear(int year) {
+        float[] tot_incomes = new float[12];
+        Calendar calendar = Calendar.getInstance();
+        for (Operation spending : this.spendings) {
+            calendar.setTime(spending.getDate());
+            if (calendar.get(Calendar.YEAR) == year) {
+                tot_incomes[calendar.get(Calendar.MONTH)] += spending.getValue();
+            }
+        }
+        return tot_incomes;
+    }
+
+    public float[] getOperationByYear(int year) {
+        float[] income = getIncomesByYear(year);
+        float[] spending = getSpendingsByYear(year);
+        float[] total = new float[12];
+
+        for (int i = 0; i < 12; i++) {
+            total[i] = income[i] - spending[i];
+        }
+        return total;
+    }
+
+    public float[] getTotalOperationByYear(int year) {
+        float[] income = getIncomesByYear(year);
+        float[] spending = getSpendingsByYear(year);
+        float sum = 0;
+        float[] total = new float[12];
+
+        for (int i = 0; i < 12; i++) {
+            sum = sum + income[i] - spending[i];
+            total[i] += sum;
+        }
+        return total;
+    }
+
+    public ArrayList getPossibleDate() {
+        ArrayList<Date> date = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        for (Operation spending : spendings) {
+            calendar.setTime(spending.getDate());
+            if (!findDate(date, calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR))) {
+                date.add((Date) spending.getDate());
+            }
+        }
+        for (Date d : date) {
+            System.out.println(d.toString());
+        }
+        return date;
+    }
+
+    public boolean findDate(ArrayList<Date> date, int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        for (Date d : date) {
+            calendar.setTime(d);
+            if ((calendar.get(Calendar.YEAR) == year) && (calendar.get(Calendar.MONTH) == month)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void addOperation(float amount, Date date, int category) throws SQLException {
+        if (amount >= 0) {
+            incomes.add(new Operation(amount, date, category));
+        } else {
+            spendings.add(new Operation(amount, date, category));
+        }
+        PreparedStatement pstmt = conn.prepareStatement(
+                "INSERT INTO flux (user_id, amount, date, category) VALUES(?, ?, ?, ?)");
+        pstmt.setInt(1, this.id);
+        pstmt.setFloat(2, amount);
+        pstmt.setDate(3, (java.sql.Date) date);
+        pstmt.setInt(4, category);
+
+        int rows = pstmt.executeUpdate();
+        conn.commit();
     }
 
     public int getID() {

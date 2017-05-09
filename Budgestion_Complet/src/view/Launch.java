@@ -1,7 +1,6 @@
 package view;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -28,19 +27,13 @@ public class Launch {
         log_in.setLayoutX(scene.getWidth()/2-150);
         log_in.setLayoutY(300);
         
-        sign_up.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                Inscription inscription = new Inscription(primaryStage);
-            }
-        });
+        sign_up.setOnAction((ActionEvent event) -> {
+            Inscription inscription = new Inscription(primaryStage);
+    });
         
-        log_in.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                Identificator identificator = new Identificator(primaryStage);
-            }
-        });
+        log_in.setOnAction((ActionEvent event) -> {
+            Identificator identificator = new Identificator(primaryStage);
+    });
         
         root.getChildren().add(sign_up);
         root.getChildren().add(log_in);
