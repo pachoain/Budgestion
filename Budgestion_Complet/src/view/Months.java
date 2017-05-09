@@ -1,5 +1,8 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.sql.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -48,10 +51,17 @@ public class Months {
         choicelabel.setStyle("-fx-font: 17 arial;");
         choicelabel.setLayoutX(20);
         choicelabel.setLayoutY(44);
-        
-        ChoiceBox cm = new ChoiceBox(FXCollections.observableArrayList(
-            "Jan 2017", "Feb 2017", "Mar 2017", "Apr 2017", "May 2017")
-        );
+        ArrayList<Date> date = account.getPossibleDate();
+        ObservableList<String> dfx = FXCollections.observableArrayList();
+        ChoiceBox cm = new ChoiceBox();
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct","Nov","Dec"};
+        Calendar c = Calendar.getInstance();
+        for(Date d : date){
+            c.setTime(d);
+            String s = months[c.get(Calendar.MONTH)] + " " + c.get(Calendar.YEAR);
+            dfx.add(s);
+        }
+        cm.setItems(dfx);
         cm.setTooltip(new Tooltip("Select the month"));
         cm.setLayoutY(40);
         cm.setLayoutX(150);
@@ -67,17 +77,27 @@ public class Months {
         chart.setLegendSide(Side.LEFT);
         chart.setPrefSize(960, 460);
         chart.setLayoutY(80);
-        
         val.setOnAction((ActionEvent event) -> {
             if(cm.getValue()!= null){
+                String[] s = cm.getValue().toString().split(" ");
+                int month = -1;
+                int year = Integer.parseInt(s[1]);
+                for(int i = 0; i < 12; i++){
+                    if(s[0].equals(months[i])){
+                        month = i;
+                        break;
+                    }
+                }
+                double[] monthsSpending = account.getMonth(month, year);
+                System.out.println(monthsSpending[1]);
                 ObservableList<PieChart.Data> pieChartData =
                         FXCollections.observableArrayList(
-                                new PieChart.Data("Food", 15),
-                                new PieChart.Data("Multimedia", 25),
-                                new PieChart.Data("Withdraw", 10),
-                                new PieChart.Data("Hobbies", 17),
-                                new PieChart.Data("Transports", 33),
-                                new PieChart.Data("Other", 20));
+                                new PieChart.Data("Food", monthsSpending[1]),
+                                new PieChart.Data("Multimedia", monthsSpending[2]),
+                                new PieChart.Data("Withdraw", monthsSpending[3]),
+                                new PieChart.Data("Hobbies", monthsSpending[4]),
+                                new PieChart.Data("Transports", monthsSpending[5]),
+                                new PieChart.Data("Other", monthsSpending[6]));
                 
                 chart.setData(pieChartData);
                 chart.setTitle("Spendings on "+cm.getValue());

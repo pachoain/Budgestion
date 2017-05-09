@@ -12,17 +12,17 @@ import java.util.Date;
  * @author luc
  */
 public final class Operation {
-    private float value;
+    private double value;
     private Date date;
     private int category;
     
-    public Operation(float value, Date date, int category){
+    public Operation(double value, Date date, int category){
         this.value = value;
         this.date = date;
         this.category = category;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value;
     }
 

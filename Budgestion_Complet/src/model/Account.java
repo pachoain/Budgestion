@@ -125,19 +125,16 @@ public class Account {
         }
     }
 
-    public float[] getMonth(Date date) {
-        float[] month = new float[7];
+    public double[] getMonth(int month, int year) {
+        double[] months = new double[7];
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        int currentMonth = calendar.get(Calendar.MONTH);
-        int currentYear = calendar.get(Calendar.YEAR);
         for (Operation spending : this.spendings) {
             calendar.setTime(spending.getDate());
-            if ((calendar.get(Calendar.MONTH) == currentMonth) && (calendar.get(Calendar.YEAR) == currentYear)) {
-                month[spending.getCategory()] += spending.getValue();
+            if ((calendar.get(Calendar.MONTH) == month) && (calendar.get(Calendar.YEAR) == year)) {
+                months[spending.getCategory()] += - spending.getValue();
             }
         }
-        return month;
+        return months;
     }
 
     /*public float[] getYear(Date date) {
@@ -154,34 +151,34 @@ public class Account {
         return year;
     }*/
 
-    public float[] getSpendingsByYear(int year) {
-        float[] tot_spending = new float[12];
+    public double[] getSpendingsByYear(int year) {
+        double[] tot_spending = new double[12];
         Calendar calendar = Calendar.getInstance();
         for (Operation spending : this.spendings) {
             calendar.setTime(spending.getDate());
             if (calendar.get(Calendar.YEAR) == year) {
-                tot_spending[calendar.get(Calendar.MONTH)] += spending.getValue();
+                tot_spending[calendar.get(Calendar.MONTH)] += -spending.getValue();
             }
         }
         return tot_spending;
     }
 
-    public float[] getIncomesByYear(int year) {
-        float[] tot_incomes = new float[12];
+    public double[] getIncomesByYear(int year) {
+        double[] tot_incomes = new double[12];
         Calendar calendar = Calendar.getInstance();
-        for (Operation spending : this.spendings) {
-            calendar.setTime(spending.getDate());
+        for (Operation income : this.incomes) {
+            calendar.setTime(income.getDate());
             if (calendar.get(Calendar.YEAR) == year) {
-                tot_incomes[calendar.get(Calendar.MONTH)] += spending.getValue();
+                tot_incomes[calendar.get(Calendar.MONTH)] += income.getValue();
             }
         }
         return tot_incomes;
     }
 
-    public float[] getOperationByYear(int year) {
-        float[] income = getIncomesByYear(year);
-        float[] spending = getSpendingsByYear(year);
-        float[] total = new float[12];
+    public double[] getOperationByYear(int year) {
+        double[] income = getIncomesByYear(year);
+        double[] spending = getSpendingsByYear(year);
+        double[] total = new double[12];
 
         for (int i = 0; i < 12; i++) {
             total[i] = income[i] - spending[i];
@@ -189,11 +186,11 @@ public class Account {
         return total;
     }
 
-    public float[] getTotalOperationByYear(int year) {
-        float[] income = getIncomesByYear(year);
-        float[] spending = getSpendingsByYear(year);
-        float sum = 0;
-        float[] total = new float[12];
+    public double[] getTotalOperationByYear(int year) {
+        double[] income = getIncomesByYear(year);
+        double[] spending = getSpendingsByYear(year);
+        double sum = 0;
+        double[] total = new double[12];
 
         for (int i = 0; i < 12; i++) {
             sum = sum + income[i] - spending[i];
@@ -211,12 +208,30 @@ public class Account {
                 date.add((Date) spending.getDate());
             }
         }
-        for (Date d : date) {
-            System.out.println(d.toString());
+        return date;
+    }
+    
+    public ArrayList getPossibleYear() {
+        ArrayList<Integer> date = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        for (Operation spending : spendings) {
+            calendar.setTime(spending.getDate());
+            if(!findDate(date, calendar.get(Calendar.YEAR))){
+                date.add(calendar.get(Calendar.YEAR));
+            }
         }
         return date;
     }
 
+     public boolean findDate(ArrayList<Integer> date, int year) {
+        for (int d : date) {
+            if (year == d) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public boolean findDate(ArrayList<Date> date, int month, int year) {
         Calendar calendar = Calendar.getInstance();
         for (Date d : date) {
