@@ -14,9 +14,9 @@ import java.util.Date;
 public final class Operation {
     private float value;
     private Date date;
-    private Category category;
+    private int category;
     
-    public Operation(float value, Date date, Category category){
+    public Operation(float value, Date date, int category){
         this.value = value;
         this.date = date;
         this.category = category;
@@ -38,11 +38,11 @@ public final class Operation {
         this.date = date;
     }
 
-    public Category getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 }

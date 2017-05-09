@@ -1,7 +1,6 @@
 package view;
 
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -56,32 +55,26 @@ public class Identificator {
         back.setLayoutX(50);
         back.setLayoutY(450);
             
-        log_in.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                Account account = new Account(username.getText(), password.getText() );
-                    
-                if (account.getID() == -1){
-                    Alert alert = new Alert(AlertType.ERROR);
-                    alert.setTitle("ERROR !");
-                    alert.setHeaderText("The username or the password are wrong !");
-                    alert.setContentText("Check the details !");
-
-                    alert.showAndWait();
-               }else{
-                    Home home = new Home(primaryStage, account);
-                }
-           }
-        });
+        log_in.setOnAction((ActionEvent event) -> {
+            Account account = new Account(username.getText(), password.getText() );
+            
+            if (account.getID() == -1){
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("ERROR !");
+                alert.setHeaderText("The username or the password are wrong !");
+                alert.setContentText("Check the details !");
+                
+                alert.showAndWait();
+            }else{
+                Home home = new Home(primaryStage, account);
+            }
+    });
         
         log_in.setDefaultButton(true);
                
-        back.setOnAction(new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event) {
-                Launch launch = new Launch(primaryStage); 
-            }
-        });
+        back.setOnAction((ActionEvent event) -> {
+            Launch launch = new Launch(primaryStage);
+    });
         
         
         root.getChildren().add(user_label);
