@@ -1,5 +1,7 @@
 package view;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,7 +19,7 @@ public class Inscription {
     public Inscription(Stage primaryStage) {
         Group root = new Group();
 
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
+        Scene scene = new Scene(root, 1300, 680, Color.LIGHTSTEELBLUE);
 
         Label user_label = new Label("Username");
         TextField username = new TextField();
@@ -33,62 +35,62 @@ public class Inscription {
         Button validate = new Button("Validate");
         Button back = new Button("Back");
 
-        personal_info.setStyle("-fx-font: 22 arial");
-        personal_info.setLayoutX(75);
-        personal_info.setLayoutY(70);
+        personal_info.setStyle("-fx-font: 30 arial");
+        personal_info.setLayoutX(200);
+        personal_info.setLayoutY(100);
 
-        lastname_label.setStyle("-fx-font: 15 arial");
-        lastname_label.setLayoutX(100);
-        lastname_label.setLayoutY(120);
+        lastname_label.setStyle("-fx-font: 20 arial");
+        lastname_label.setLayoutX(200);
+        lastname_label.setLayoutY(175);
 
-        lastname.setStyle("-fx-font: 15 arial");
-        lastname.setLayoutX(100);
-        lastname.setLayoutY(140);
+        lastname.setStyle("-fx-font: 20 arial");
+        lastname.setLayoutX(200);
+        lastname.setLayoutY(200);
 
-        firstname_label.setStyle("-fx-font: 15 arial");
-        firstname_label.setLayoutX(100);
-        firstname_label.setLayoutY(195);
+        firstname_label.setStyle("-fx-font: 20 arial");
+        firstname_label.setLayoutX(200);
+        firstname_label.setLayoutY(275);
 
-        firstname.setStyle("-fx-font: 15 arial");
-        firstname.setLayoutX(100);
-        firstname.setLayoutY(215);
+        firstname.setStyle("-fx-font: 20 arial");
+        firstname.setLayoutX(200);
+        firstname.setLayoutY(300);
 
-        user_label.setStyle("-fx-font: 15 arial;");
-        user_label.setLayoutX(600);
-        user_label.setLayoutY(75);
+        user_label.setStyle("-fx-font: 20 arial;");
+        user_label.setLayoutX(800);
+        user_label.setLayoutY(175);
 
-        username.setStyle("-fx-font: 15 arial;");
+        username.setStyle("-fx-font: 20 arial;");
         username.setPrefSize(250, 25);
-        username.setLayoutX(600);
-        username.setLayoutY(95);
+        username.setLayoutX(800);
+        username.setLayoutY(200);
 
-        password_label.setStyle("-fx-font: 15 arial;");
-        password_label.setLayoutX(600);
-        password_label.setLayoutY(150);
+        password_label.setStyle("-fx-font: 20 arial;");
+        password_label.setLayoutX(800);
+        password_label.setLayoutY(275);
 
-        password.setStyle("-fx-font: 15 arial;");
+        password.setStyle("-fx-font: 20 arial;");
         password.setPrefSize(250, 25);
-        password.setLayoutX(600);
-        password.setLayoutY(170);
+        password.setLayoutX(800);
+        password.setLayoutY(300);
 
-        confirmation_label.setStyle("-fx-font: 15 arial;");
-        confirmation_label.setLayoutX(600);
-        confirmation_label.setLayoutY(225);
+        confirmation_label.setStyle("-fx-font: 20 arial;");
+        confirmation_label.setLayoutX(800);
+        confirmation_label.setLayoutY(375);
 
-        confirmation_password_label.setStyle("-fx-font: 15 arial;");
+        confirmation_password_label.setStyle("-fx-font: 20 arial;");
         confirmation_password_label.setPrefSize(250, 25);
-        confirmation_password_label.setLayoutX(600);
-        confirmation_password_label.setLayoutY(245);
+        confirmation_password_label.setLayoutX(800);
+        confirmation_password_label.setLayoutY(400);
 
-        validate.setStyle("-fx-font: 15 arial;");
-        validate.setPrefSize(150, 75);
-        validate.setLayoutX(650);
-        validate.setLayoutY(350);
+        validate.setStyle("-fx-font: 20 arial;");
+        validate.setPrefSize(200, 100);
+        validate.setLayoutX(850);
+        validate.setLayoutY(500);
 
-        back.setStyle("-fx-font: 15 arial;");
-        back.setPrefSize(150, 75);
+        back.setStyle("-fx-font: 20 arial;");
+        back.setPrefSize(200, 100);
         back.setLayoutX(50);
-        back.setLayoutY(450);
+        back.setLayoutY(550);
 
         validate.setOnAction((ActionEvent event) -> {
             if (username.getText().equals("") || password.getText().equals("") || confirmation_password_label.getText().equals("") || firstname.getText().equals("") || lastname.getText().equals("")) {
@@ -100,7 +102,28 @@ public class Inscription {
                 alert.showAndWait();
             } else {
                 if (password.getText().equals(confirmation_password_label.getText())) {
-                    Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), password.getText());
+                    
+                    byte[] uniqueKey = password.getText().getBytes();
+                    byte[] hash = null;
+
+                    try {
+                        hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
+                    } catch (NoSuchAlgorithmException e) {
+                        throw new Error("No MD5 support in this VM.");
+                    }
+
+                    StringBuilder hashString = new StringBuilder();
+                    for (int i = 0; i < hash.length; i++) {
+                        String hex = Integer.toHexString(hash[i]);
+                        if (hex.length() == 1) {
+                            hashString.append('0');
+                            hashString.append(hex.charAt(hex.length() - 1));
+                        } else {
+                            hashString.append(hex.substring(hex.length() - 2));
+                        }
+                    }
+                    
+                    Account account = new Account(firstname.getText(), lastname.getText(), username.getText(), hashString.toString());
                     if (account.getID() == -1) {
                         Alert alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("ERROR !");

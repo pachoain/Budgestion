@@ -1,5 +1,7 @@
 package view;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -18,7 +20,7 @@ public class Identificator {
     public Identificator(Stage primaryStage){
     Group root = new Group();
         
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
+        Scene scene = new Scene(root, 1300, 680, Color.LIGHTSTEELBLUE);
         
         Label user_label = new Label("Username");
         TextField username = new TextField();
@@ -27,36 +29,57 @@ public class Identificator {
         Button log_in = new Button("Log In"); 
         Button back = new Button("Back");
         
-        user_label.setStyle("-fx-font: 15 arial;");
+        user_label.setStyle("-fx-font: 20 arial;");
         user_label.setLayoutX(scene.getWidth()/2-125);
-        user_label.setLayoutY(80);
+        user_label.setLayoutY(100);
         
-        username.setStyle("-fx-font: 15 arial;");
+        username.setStyle("-fx-font: 20 arial;");
         username.setPrefSize(250,25);
         username.setLayoutX(scene.getWidth()/2-125);
-        username.setLayoutY(100);
+        username.setLayoutY(125);
         
-        password_label.setStyle("-fx-font: 15 arial;");
+        password_label.setStyle("-fx-font: 20 arial;");
         password_label.setLayoutX(scene.getWidth()/2-125);
-        password_label.setLayoutY(180);
+        password_label.setLayoutY(225);
         
-        password.setStyle("-fx-font: 15 arial;");
+        password.setStyle("-fx-font: 20 arial;");
         password.setPrefSize(250,25);
         password.setLayoutX(scene.getWidth()/2-125);
-        password.setLayoutY(200);
+        password.setLayoutY(250);
         
-        log_in.setStyle("-fx-font: 15 arial;");
-        log_in.setPrefSize(150, 75);
-        log_in.setLayoutX(scene.getWidth()/2-75);
-        log_in.setLayoutY(350);
+        log_in.setStyle("-fx-font: 20 arial;");
+        log_in.setPrefSize(200, 100);
+        log_in.setLayoutX(scene.getWidth()/2-100);
+        log_in.setLayoutY(400);
         
-        back.setStyle("-fx-font: 15 arial;");
-        back.setPrefSize(150, 75);
+        back.setStyle("-fx-font: 20 arial;");
+        back.setPrefSize(200, 100);
         back.setLayoutX(50);
-        back.setLayoutY(450);
+        back.setLayoutY(550);
             
         log_in.setOnAction((ActionEvent event) -> {
-            Account account = new Account(username.getText(), password.getText() );
+            
+            byte[] uniqueKey = password.getText().getBytes();
+            byte[] hash = null;
+
+            try {
+                hash = MessageDigest.getInstance("MD5").digest(uniqueKey);
+            } catch (NoSuchAlgorithmException e) {
+                throw new Error("No MD5 support in this VM.");
+            }
+
+            StringBuilder hashString = new StringBuilder();
+            for (int i = 0; i < hash.length; i++) {
+                String hex = Integer.toHexString(hash[i]);
+                if (hex.length() == 1) {
+                    hashString.append('0');
+                    hashString.append(hex.charAt(hex.length() - 1));
+                } else {
+                    hashString.append(hex.substring(hex.length() - 2));
+                }
+            }
+            
+            Account account = new Account(username.getText(), hashString.toString() );
             
             if (account.getID() == -1){
                 Alert alert = new Alert(AlertType.ERROR);

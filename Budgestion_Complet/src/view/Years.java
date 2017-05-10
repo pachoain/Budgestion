@@ -38,7 +38,7 @@ public class Years {
     public Years(Stage primaryStage, Account account) {
         Group root = new Group();
 
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
+        Scene scene = new Scene(root, 1300, 680, Color.LIGHTSTEELBLUE);
 
         primaryStage.setTitle("Budgestion");
 
@@ -50,7 +50,7 @@ public class Years {
         MenuItem logOut = new MenuItem("Log Out");
         menu.getItems().addAll(menuHome, menuYears, menuMonths, logOut);
         menuBar.getMenus().addAll(menu);
-        menuBar.setPrefWidth(960);
+        menuBar.setPrefWidth(1300);
 
         logOut.setOnAction((ActionEvent event) -> {
             Launch budgestion = new Launch(primaryStage);
@@ -67,7 +67,7 @@ public class Years {
         menuYears.setDisable(true);
 
         Label choicelabel = new Label("Select a year :");
-        choicelabel.setStyle("-fx-font: 17 arial;");
+        choicelabel.setStyle("-fx-font: 20 arial;");
         choicelabel.setLayoutX(20);
         choicelabel.setLayoutY(44);
 
@@ -80,11 +80,11 @@ public class Years {
         cy.setItems(dfx);
         cy.setTooltip(new Tooltip("Select the month"));
         cy.setLayoutY(40);
-        cy.setLayoutX(150);
+        cy.setLayoutX(200);
 
         Button val = new Button("Validate");
-        val.setStyle("-fx-font: 15 arial;");
-        val.setLayoutX(280);
+        val.setStyle("-fx-font: 20 arial;");
+        val.setLayoutX(300);
         val.setLayoutY(42);
         val.setDefaultButton(true);
 
@@ -94,8 +94,8 @@ public class Years {
         xAxis.setLabel("Month");
         yAxis.setLabel("€");
 
-        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setPrefSize(960, 460);
+        final LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
+        lineChart.setPrefSize(1250, 600);
         lineChart.setLayoutY(80);
 
         val.setOnAction((ActionEvent event) -> {
@@ -151,12 +151,13 @@ public class Years {
                 if (check) {
                     lineChart.getData().remove(0, 3);
                 }
-                lineChart.getData().addAll(series1, series2, series3);
+                lineChart.getData().addAll(series1, series3, series2);
                 lineChart.setTitle("Spendings & Earnings, " + cy.getValue());
                 setCheck(true);
             }
         });
 
+              
         root.getChildren().add(menuBar);
         root.getChildren().add(choicelabel);
         root.getChildren().add(cy);

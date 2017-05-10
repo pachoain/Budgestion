@@ -27,7 +27,7 @@ public class Home {
     public Home(Stage primaryStage, Account account) {
         Group root = new Group();
 
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
+        Scene scene = new Scene(root, 1300, 680, Color.LIGHTSTEELBLUE);
 
         primaryStage.setTitle("Budgestion");
 
@@ -39,7 +39,7 @@ public class Home {
         MenuItem logOut = new MenuItem("Log Out");
         menu.getItems().addAll(menuHome, menuYears, menuMonths, logOut);
         menuBar.getMenus().addAll(menu);
-        menuBar.setPrefWidth(960);
+        menuBar.setPrefWidth(1300);
 
         Button earning = new Button("Earning");
         Button spending = new Button("Spending");
@@ -47,25 +47,25 @@ public class Home {
         Button import_button = new Button("Import");
         Button export_button = new Button("Export");
 
-        import_button.setStyle("-fx-font: 22 arial;");
-        import_button.setPrefSize(300, 150);
-        import_button.setLayoutX(550);
+        import_button.setStyle("-fx-font: 30 arial;");
+        import_button.setPrefSize(400, 200);
+        import_button.setLayoutX(790);
         import_button.setLayoutY(100);
 
-        export_button.setStyle("-fx-font: 22 arial;");
-        export_button.setPrefSize(300, 150);
-        export_button.setLayoutX(550);
-        export_button.setLayoutY(300);
+        export_button.setStyle("-fx-font: 30 arial;");
+        export_button.setPrefSize(400, 200);
+        export_button.setLayoutX(790);
+        export_button.setLayoutY(400);
 
-        earning.setStyle("-fx-font: 22 arial;");
-        earning.setPrefSize(300, 150);
-        earning.setLayoutX(120);
+        earning.setStyle("-fx-font: 30 arial;");
+        earning.setPrefSize(400, 200);
+        earning.setLayoutX(130);
         earning.setLayoutY(100);
 
-        spending.setStyle("-fx-font: 22 arial;");
-        spending.setPrefSize(300, 150);
-        spending.setLayoutX(120);
-        spending.setLayoutY(300);
+        spending.setStyle("-fx-font: 30 arial;");
+        spending.setPrefSize(400, 200);
+        spending.setLayoutX(130);
+        spending.setLayoutY(400);
 
         earning.setOnAction((ActionEvent event) -> {
             Stage earning1 = new Stage();

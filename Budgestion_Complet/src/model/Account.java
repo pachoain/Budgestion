@@ -21,9 +21,9 @@ public class Account {
         try {
             Class.forName("org.postgresql.Driver");
             System.out.println("Driver O.K.");
-            String url = "jdbc:postgresql://localhost:5432/Budgestion";
-            String user = "isen";
-            String passwd = "isencir";
+            String url = "jdbc:postgresql://localhost:5433/Budgestion";
+            String user = "postgres";
+            String passwd = "fabr9600";
 
             this.conn = DriverManager.getConnection(url, user, passwd);
             conn.setAutoCommit(false);

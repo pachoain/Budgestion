@@ -19,7 +19,7 @@ public class Months {
     public Months(Stage primaryStage, Account account){
         Group root = new Group();
         
-        Scene scene = new Scene(root, 960, 540, Color.LIGHTSTEELBLUE);
+        Scene scene = new Scene(root, 1300, 680, Color.LIGHTSTEELBLUE);
         
         primaryStage.setTitle("Budgestion");
     
@@ -31,7 +31,7 @@ public class Months {
         MenuItem logOut = new MenuItem("Log Out");
         menu.getItems().addAll(menuHome, menuYears, menuMonths, logOut);
         menuBar.getMenus().addAll(menu);
-        menuBar.setPrefWidth(960);
+        menuBar.setPrefWidth(1300);
         
         logOut.setOnAction((ActionEvent event) -> {
             Launch budgestion = new Launch(primaryStage);
@@ -48,7 +48,7 @@ public class Months {
         menuMonths.setDisable(true);
         
         Label choicelabel = new Label("Select a month :");
-        choicelabel.setStyle("-fx-font: 17 arial;");
+        choicelabel.setStyle("-fx-font: 20 arial;");
         choicelabel.setLayoutX(20);
         choicelabel.setLayoutY(44);
         ArrayList<Date> date = account.getPossibleDate();
@@ -64,18 +64,18 @@ public class Months {
         cm.setItems(dfx);
         cm.setTooltip(new Tooltip("Select the month"));
         cm.setLayoutY(40);
-        cm.setLayoutX(150);
+        cm.setLayoutX(200);
         
         Button val = new Button("Validate");
-        val.setStyle("-fx-font: 15 arial;");
-        val.setLayoutX(280);
+        val.setStyle("-fx-font: 20 arial;");
+        val.setLayoutX(350);
         val.setLayoutY(42);
         val.setDefaultButton(true);
         
         final PieChart chart = new PieChart();
         chart.setLabelLineLength(10);
         chart.setLegendSide(Side.LEFT);
-        chart.setPrefSize(960, 460);
+        chart.setPrefSize(1250, 600);
         chart.setLayoutY(80);
         val.setOnAction((ActionEvent event) -> {
             if(cm.getValue()!= null){
